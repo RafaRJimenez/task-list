@@ -29,15 +29,21 @@ const TaskList = ({ showSettings, setShowSettings }) => {
 
   const addNewTask = () => {
     if (newTask === "") return;
-    // Vamos a añadir una nueva tarea a la base de datos
     const task = { task: newTask, completed: false };
     addTask(task)
       .then(() => {
-        // Cuando se haya añadido -> Mostraremos todas dentro del estado tasklist
-        return setTasklist([...tasklist, task]);
+        return getTasks(); 
       })
-      .catch((e) => console.error(e))
-      .finally(() => setNewTask(""));
+      .then((tasks) => {
+        setTasklist([...tasks]);
+        console.log( tasks); 
+      })
+      .catch((e) => {
+        console.error("Error:", e);
+      })
+      .finally(() => {
+        setNewTask("");
+      });
   };
 
   /**
